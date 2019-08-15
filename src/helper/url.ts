@@ -1,4 +1,4 @@
-import { isDate, isObject } from './util'
+import { isDate, isPlainObject } from './util'
 function encode(val: string): string {
   return encodeURIComponent(val)
     .replace(/%40/g, '@')
@@ -31,13 +31,15 @@ export function buildURL(url: string, params: any) {
       values = [val]
     }
     // 群不判断玩后开始插入到数组当中
+    console.log('values', values);
+
     values.forEach((val) => {
       if (isDate(val)) {
         val = val.toISOString()
-      } else if (isObject(val)) {
+      } else if (isPlainObject(val)) {
         val = JSON.stringify(val)
       }
-      parts.push(`${encode(keys)} = ${encode(val)}`)
+      parts.push(`${encode(keys)}=${encode(val)}`)
     })
   })
 
@@ -51,5 +53,4 @@ export function buildURL(url: string, params: any) {
     url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams
   }
   return url
-
 }
