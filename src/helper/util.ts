@@ -9,5 +9,5 @@ export function isObject(val: any): val is Object {
 }
 
 export function isPlainObject(val: any): val is Object {
-  return toString.call(val) === '[Object Object]'
+  return toString.call(val) === '[object Object]'
 }
