@@ -91,7 +91,7 @@ axios({
   }
 }).then((res) => {
   console.log(res);
-})
+}).catch((e) => console.log(e))
 
 axios({
   method: 'post',
@@ -107,15 +107,15 @@ axios({
   }
 }).then((res) => {
   console.log(res);
-})
+}).catch((e) => console.log(e))
+
 
 const paramsString = 'q=URLUtils.searchParams&topic=api'
 const searchParams = new URLSearchParams(paramsString)
-
 axios({
   method: 'post',
   url: '/base/post',
   data: searchParams
 }).then((res) => {
   console.log(res);
-})
+}).catch((e) => console.log(e))
