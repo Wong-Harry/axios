@@ -63,8 +63,7 @@ router.get('/error/get', function (req, res) {
       msg: `hello world`
     })
   } else {
-    res.status(500)
-    res.end()
+    res.status(500).end()
   }
 })
 

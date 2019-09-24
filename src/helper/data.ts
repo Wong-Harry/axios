@@ -2,9 +2,18 @@ import { isPlainObject } from "./util";
 
 export function transformReqest(data: any): any {
   if (isPlainObject(data)) {
-    console.log(data);
     return JSON.stringify(data)
   }
   return data
+}
 
+export function transformResponse(data: any): any {
+  if (typeof data === 'string') {
+    try {
+      data = JSON.parse(data)
+    } catch (error) {
+      // do nothin
+    }
+  }
+  return data
 }

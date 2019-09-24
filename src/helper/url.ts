@@ -25,13 +25,12 @@ export function buildURL(url: string, params: any) {
     // 判断params是否为数组
     let values: string[]
     if (Array.isArray(val)) {
+      // 如果是数组
       values = val
       keys += '[]'
     } else {
       values = [val]
     }
-    // 群不判断玩后开始插入到数组当中
-    console.log('values', values);
 
     values.forEach((val) => {
       if (isDate(val)) {
