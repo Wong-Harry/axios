@@ -1,11 +1,63 @@
-import { AxiosPromise, AxiosRequestConfig } from "..";
 import dispatchRequest from "./dispatchRequest";
-import { Method } from "../types";
+import { AxiosResponse, Method, ResolvedFn, AxiosRequestConfig, AxiosPromise, RejectedFn } from "../types";
+import InterceptorManager from "./interceptorManager";
+import mergeConfig from "./mergeConfig";
+
+interface Interceptors {
+  request: InterceptorManager<AxiosRequestConfig>
+  response: InterceptorManager<AxiosResponse>
+}
+
+interface PromiseChain<T> {
+  resolved: ResolvedFn<T> | ((config: AxiosRequestConfig) => AxiosPromise),
+  rejected?: RejectedFn
+
+}
 
 export default class Axios {
+  defaults: AxiosRequestConfig
+  interceptors: Interceptors
 
-  request(config: AxiosRequestConfig): AxiosPromise {
-    return dispatchRequest(config)
+  constructor(initConfig: AxiosRequestConfig) {
+    this.interceptors = {
+      request: new InterceptorManager<AxiosRequestConfig>(),
+      response: new InterceptorManager<AxiosResponse>()
+    }
+    this.defaults = initConfig
+  }
+
+  request(url: any, config?: any): AxiosPromise {
+    if (typeof url === 'string') {
+      if (!config) {
+        config = {}
+      }
+      config.url = url
+    } else {
+      config = url
+    }
+
+    // config = mergeConfig(this.defaults, config)
+
+    const chain: PromiseChain<any>[] = [{
+      resolved: dispatchRequest,
+      rejected: undefined
+    }]
+
+    this.interceptors.request.forEach(interceptor => {
+      chain.unshift(interceptor)
+    })
+    this.interceptors.response.forEach(interceptor => {
+      chain.push(interceptor)
+    })
+
+    let promis = Promise.resolve(config)
+
+    while (chain.length) {
+      const { resolved, rejected } = chain.shift()!
+      promis = promis.then(resolved, rejected)
+    }
+
+    return promis
   }
 
   get(url: string, config: AxiosRequestConfig): AxiosPromise {

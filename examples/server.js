@@ -31,6 +31,8 @@ reginsterSimpleRouter()
 reginsterBaseRouter()
 reginsterErrorRouter()
 reginsterExtendRouter()
+rejisterInterceptirRouter()
+rejisterConfigRouter()
 
 app.use(router)
 
@@ -94,6 +96,17 @@ function reginsterExtendRouter() {
       msg: 'hello Word'
     })
   })
+  router.get('/extend/user', function (req, res) {
+    res.json({
+      code: 0,
+      message: 'ok',
+      result: {
+        name: 'HarryWong',
+        age: 20
+      }
+    })
+  })
+
 
   router.options('/extend/options', function (req, res) {
     res.end()
@@ -115,4 +128,27 @@ function reginsterExtendRouter() {
     res.json(req.body)
   })
 
+  router.patch('/extend/user', function (req, res) {
+    res.json({
+      code: 0,
+      msesage: 'ok',
+      result: {
+        name: 'HarryWong',
+        age: 20
+      }
+    })
+  })
+}
+
+
+function rejisterInterceptirRouter() {
+  router.get('/interceptor/get', function (req, res) {
+    res.end('hello')
+  })
+}
+
+function rejisterConfigRouter() {
+  router.post('/config/post', function (req, res) {
+    res.json(req.body)
+  })
 }
