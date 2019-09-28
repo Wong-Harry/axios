@@ -20,19 +20,19 @@ function deepMergeStrat(val1: any, val2: any): any {
     return val2
   } else if (isPlainObject(val1)) {
     return deepMerge(val1)
-  } else {
+  } else if (typeof val1 !== 'undefined') {
     return val1
   }
 }
 
-const startKeysdeepMerge = ['headers']
-startKeysdeepMerge.forEach(key => {
-  strats[key] = deepMergeStrat
-})
-
 const startKeysFromVal2 = ['url', 'params', 'data']
 startKeysFromVal2.forEach(key => {
   strats[key] = fromVal2Start
+})
+
+const startKeysdeepMerge = ['headers']
+startKeysdeepMerge.forEach(key => {
+  strats[key] = deepMergeStrat
 })
 
 export default function mergeConfig(config1: AxiosRequestConfig, config2?: AxiosRequestConfig): AxiosRequestConfig {

@@ -19,11 +19,11 @@ export default class Axios {
   interceptors: Interceptors
 
   constructor(initConfig: AxiosRequestConfig) {
+    this.defaults = initConfig
     this.interceptors = {
       request: new InterceptorManager<AxiosRequestConfig>(),
       response: new InterceptorManager<AxiosResponse>()
     }
-    this.defaults = initConfig
   }
 
   request(url: any, config?: any): AxiosPromise {
@@ -36,7 +36,7 @@ export default class Axios {
       config = url
     }
 
-    // config = mergeConfig(this.defaults, config)
+    config = mergeConfig(this.defaults, config)
 
     const chain: PromiseChain<any>[] = [{
       resolved: dispatchRequest,

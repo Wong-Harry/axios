@@ -7,8 +7,14 @@ export interface AxiosRequestConfig {
   headers?: any
   responseType?: XMLHttpRequestResponseType
   timeout?: number
+  transformRequest?: AxiosTransFormer | AxiosTransFormer[]
+  transformResponse?: AxiosTransFormer | AxiosTransFormer[]
 
   [propName: string]: any
+}
+
+export interface AxiosStatic extends AxiosIstance {
+  created(congif: AxiosRequestConfig): AxiosIstance
 }
 
 export type Method =
@@ -78,4 +84,8 @@ export interface ResolvedFn<T = any> {
 }
 export interface RejectedFn {
   (error: any): any
+}
+
+export interface AxiosTransFormer {
+  (data: any, headers?: any): any
 }

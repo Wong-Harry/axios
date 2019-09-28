@@ -32,10 +32,8 @@ export default function flattenHeaders(headers: any, method: Method): any {
 
   headers = deepMerge(headers.common, headers[method], headers)
 
-  const methodToDelete = ['delete', 'get', 'hed', 'options', 'post', 'put', 'patch', 'common']
+  const methodToDelete = ['delete', 'get', 'head', 'options', 'post', 'put', 'patch', 'common']
   methodToDelete.forEach(method => {
-    console.log(method);
-
     delete headers[method]
   })
 
