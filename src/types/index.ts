@@ -9,8 +9,32 @@ export interface AxiosRequestConfig {
   timeout?: number
   transformRequest?: AxiosTransFormer | AxiosTransFormer[]
   transformResponse?: AxiosTransFormer | AxiosTransFormer[]
+  cancelToken?: CancelToken
 
   [propName: string]: any
+}
+
+export interface CancelToken {
+  promise: Promise<string>
+  reason?: string
+}
+
+export interface Canceler {
+  (message?: string): void
+}
+
+export interface CancelTokenSource {
+  token: CancelToken
+  cancel: Canceler
+}
+
+export interface CancelTokenStatic {
+  new(executor: CancelExecutor): CancelToken
+  soure(): CancelTokenSource
+}
+
+export interface CancelExecutor {
+  (cancel: Canceler): void
 }
 
 export interface AxiosStatic extends AxiosIstance {
