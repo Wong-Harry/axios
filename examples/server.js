@@ -33,7 +33,6 @@ app.use(bodyParser.urlencoded({
   extended: true
 }))
 
-
 const router = express.Router()
 
 reginsterSimpleRouter()

@@ -1,4 +1,4 @@
-import { AxiosIstance, AxiosRequestConfig, AxiosStatic } from "./types";
+import { AxiosRequestConfig, AxiosStatic } from "./types";
 import Axios from "./core/Axios";
 import { extend } from "./helper/util";
 import defaults from "./defaults";

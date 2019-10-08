@@ -126,6 +126,7 @@
     "webpack": "^4.37.0",
     "webpack-dev-middleware": "^3.7.0",
     "webpack-hot-middleware": "^2.25.0",
-    "cookie-parser": "^1.4.4"
+    "cookie-parser": "^1.4.4",
+    "nprogress": "^0.2.0"
   }
 }

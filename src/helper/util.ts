@@ -34,10 +34,15 @@ export function deepMerge(...objs: any[]): any {
             result[key] = deepMerge(val)
           }
         } else {
-          result [key] = val
+          result[key] = val
         }
       })
     }
   })
   return result
+}
+
+
+export function isFormData(val: any): boolean {
+  return typeof val !== 'undefined' && val instanceof FormData
 }
