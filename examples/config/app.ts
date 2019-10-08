@@ -34,7 +34,7 @@ axios({
 }).catch(e => console.error(e))
 
 
-const instance = axios.created({
+const instance = axios.create({
   transformRequest: [(function (data) {
     return qs.stringify(data)
   }), ...(axios.defaults.transformRequest as AxiosTransFormer[])],

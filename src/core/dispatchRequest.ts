@@ -6,9 +6,9 @@ import transform from '../transform';
 
 export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
   // 开始处理请求
+  throwIfCancellationRequested(config)
   processConfig(config)
   // 请求处理完成，发送请求
-
   return xhr(config).then((res) => {
     return tansformResponseData(res)
   })
@@ -25,6 +25,13 @@ function processConfig(config: AxiosRequestConfig): void {
 function transformUrl(config: AxiosRequestConfig): string {
   const { url, params } = config
   return buildURL(url!, params)
+}
+
+function throwIfCancellationRequested(config: AxiosRequestConfig): void {
+  if (config.cancelToken) {
+    config.cancelToken.throwIfRequested()
+  }
+
 }
 
 // function transformRequestData(config: AxiosRequestConfig): any {

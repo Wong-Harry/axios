@@ -1,11 +1,13 @@
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types'
 import { CreateError } from '../helper/error'
+import { isURLSameOrigin } from '../helper/url'
+import cookie from '../helper/cookie'
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
 
   return new Promise((resolve, reject) => {
 
-    const { data = null, url, method = 'get', headers, responseType, timeout, cancelToken } = config
+    const { data = null, url, method = 'get', headers, responseType, timeout, cancelToken, withCredentials, xsrfCookieName, xsrfHeaderName } = config
 
     const request = new XMLHttpRequest()
 
@@ -17,6 +19,10 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       request.responseType = responseType
     }
 
+    if (withCredentials) {
+      request.withCredentials = true
+    }
+    // 设置取消请求方法
     if (cancelToken) {
       cancelToken.promise.then(reason => {
         request.abort()
@@ -24,6 +30,12 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       }).catch(e => { console.log(e) })
     }
 
+    if ((withCredentials || isURLSameOrigin(url!)) && xsrfCookieName) {
+      const xsrfValue = cookie.read(xsrfCookieName)
+      if (xsrfValue) {
+        headers[xsrfHeaderName!] = xsrfValue
+      }
+    }
     // 设置请求方式
     request.open(method.toUpperCase(), url!, true)
     //
