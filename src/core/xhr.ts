@@ -8,7 +8,21 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
 
   return new Promise((resolve, reject) => {
 
-    const { data = null, url, method = 'get', headers, responseType, timeout, cancelToken, withCredentials, xsrfCookieName, xsrfHeaderName, onDownloadProgress, onUploadProgress, auth } = config
+    const {
+      data = null,
+      url,
+      method = 'get',
+      headers,
+      responseType,
+      timeout,
+      cancelToken,
+      withCredentials,
+      xsrfCookieName,
+      xsrfHeaderName,
+      onDownloadProgress,
+      onUploadProgress,
+      auth,
+      validateStatus } = config
     // 创建个request实例
     const request = new XMLHttpRequest()
     // request初始化
@@ -110,10 +124,23 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     }
     // 请求拦截器，成功才有resolve
     function handleResoinse(response: AxiosResponse): void {
-      if (response.status >= 200 && response.status < 300) {
+      // if (response.status >= 200 && response.status < 300) {
+      //   resolve(response)
+      // } else {
+      //   reject(CreateError(`Request failed with status code ${response.status}`, config, null, request, response))
+      // }
+      if (!validateStatus || validateStatus(response.status)) {
         resolve(response)
       } else {
-        reject(CreateError(`Request failed with status code ${response.status}`, config, null, request, response))
+        reject(
+          CreateError(
+            `Request failed with status code ${response.status}`,
+            config,
+            null,
+            request,
+            response
+          )
+        )
       }
     }
 

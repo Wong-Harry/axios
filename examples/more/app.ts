@@ -1,6 +1,7 @@
 import axios from "../../src";
 import 'nprogress/nprogress.css'
 import NProgress from 'nprogress'
+import { AxiosError } from "../../src/helper/error";
 
 
 // 设置cookie和token
@@ -92,16 +93,32 @@ import NProgress from 'nprogress'
 //
 
 // 设置HTTP授权 Authorization
-axios.post('/more/post', {
-  a: 1
-}, {
-  auth: {
-    username: 'Harry',
-    password: '123456'
+// axios.post('/more/post', {
+//   a: 1
+// }, {
+//   auth: {
+//     username: 'Harry',
+//     password: '123456'
+//   }
+// }).then(res => {
+//   console.log(res)
+// }).catch(e => {
+//   console.log(e);
+// })
+
+// 设置自定义状态吗
+axios.get('/more/304').then(res => {
+  console.log(res)
+}).catch((e: AxiosError) => {
+  console.log(e.message)
+})
+
+axios.get('/more/304', {
+  validateStatus(status) {
+    return status >= 200 && status < 400
   }
 }).then(res => {
   console.log(res)
-}).catch(e => {
-  console.log(e);
+}).catch((e: AxiosError) => {
+  console.log(e.message)
 })
-
