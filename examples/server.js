@@ -1,12 +1,15 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
+const multipart = require('connect-multiparty')
+const atob = require('atob')
 const webpack = require('webpack')
 const webpackDevMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 const WebpackConfig = require('./webpack.config')
+const path = require('path')
 
 require('./server2')
-
 const app = express()
 const compiler = webpack(WebpackConfig)
 
@@ -190,6 +193,8 @@ function registerMoreRouter() {
 
   router.post('/more/post', function (req, res) {
     const auth = req.headers.authorization
+    console.log(auth);
+
     const [type, credentials] = auth.split(' ')
     console.log(atob(credentials))
     const [username, password] = atob(credentials).split(':')
