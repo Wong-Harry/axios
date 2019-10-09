@@ -16,39 +16,47 @@ function encode(val: string): string {
     .replace(/%5D/gi, ']')
 }
 
-export function buildURL(url: string, params: any) {
+export function buildURL(url: string, params: any, paramsSerializer?: (params: any) => string): string {
   if (!params) { return url }
 
-  const parts: string[] = []
-  // 用作拼接请求,params对象可能为空,数组,对象,特殊字符,date类型
-  Object.keys(params).forEach((keys) => {
-    console.log('keys', keys);
-    let val: any = params[keys]
-    // 判断params的值是否为空
-    if (val === null || typeof val === 'undefined') {
-      return
-    }
-    // 判断params是否为数组
-    let values: string[]
-    if (Array.isArray(val)) {
-      // 如果是数组
-      values = val
-      keys += '[]'
-    } else {
-      values = [val]
-    }
-
-    values.forEach((val) => {
-      if (isDate(val)) {
-        val = val.toISOString()
-      } else if (isPlainObject(val)) {
-        val = JSON.stringify(val)
+  let serializedParams
+  if (paramsSerializer) {
+    serializedParams = paramsSerializer(params)
+  } else if (isURLSearchParams(params)) {
+    serializedParams = params.toString()
+  } else {
+    const parts: string[] = []
+    // 用作拼接请求,params对象可能为空,数组,对象,特殊字符,date类型
+    Object.keys(params).forEach((keys) => {
+      console.log('keys', keys);
+      let val: any = params[keys]
+      // 判断params的值是否为空
+      if (val === null || typeof val === 'undefined') {
+        return
       }
-      parts.push(`${encode(keys)}=${encode(val)}`)
-    })
-  })
+      // 判断params是否为数组
+      let values: string[]
+      if (Array.isArray(val)) {
+        // 如果是数组
+        values = val
+        keys += '[]'
+      } else {
+        values = [val]
+      }
 
-  let serializedParams = parts.join('&')
+      values.forEach((val) => {
+        if (isDate(val)) {
+          val = val.toISOString()
+        } else if (isPlainObject(val)) {
+          val = JSON.stringify(val)
+        }
+        parts.push(`${encode(keys)}=${encode(val)}`)
+      })
+    })
+    serializedParams = parts.join('&')
+
+  }
+
   if (serializedParams) {
     const markIndex = url.indexOf('#')
     if (markIndex !== -1) {
@@ -58,6 +66,10 @@ export function buildURL(url: string, params: any) {
     url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams
   }
   return url
+}
+
+export function isURLSearchParams(val: any): val is URLSearchParams {
+  return typeof val !== 'undefined' && val instanceof URLSearchParams
 }
 
 export function isURLSameOrigin(requestURL: string): boolean {
@@ -77,3 +89,5 @@ function resolveURL(url: string): URLOrigin {
 
   return { protocol, host }
 }
+
+

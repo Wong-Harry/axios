@@ -23,8 +23,8 @@ function processConfig(config: AxiosRequestConfig): void {
 }
 
 function transformUrl(config: AxiosRequestConfig): string {
-  const { url, params } = config
-  return buildURL(url!, params)
+  const { url, params, paramSerializer } = config
+  return buildURL(url!, params, paramSerializer)
 }
 
 function throwIfCancellationRequested(config: AxiosRequestConfig): void {
