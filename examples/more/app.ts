@@ -74,15 +74,17 @@ function loadPrigressBar() {
   })
 
   const uploadEl = document.getElementById('upload')
-  uploadEl.addEventListener('click', e => {
+  uploadEl!.addEventListener('click', e => {
     const data = new FormData()
-    const fileEl = document.getElementById('flie') as HTMLInputElement
-
+    const fileEl = document.getElementById('file') as HTMLInputElement
     if (fileEl.files) {
-      data.append('flie', fileEl.files[0])
-      instance.post('/mre/upload', data)
+      data.append('file', fileEl.files[0])
+
+      instance.post('/more/upload', data)
     }
   })
 }
+
+loadPrigressBar()
 
 
