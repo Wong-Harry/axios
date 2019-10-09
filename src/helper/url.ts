@@ -28,7 +28,6 @@ export function buildURL(url: string, params: any, paramsSerializer?: (params: a
     const parts: string[] = []
     // 用作拼接请求,params对象可能为空,数组,对象,特殊字符,date类型
     Object.keys(params).forEach((keys) => {
-      console.log('keys', keys);
       let val: any = params[keys]
       // 判断params的值是否为空
       if (val === null || typeof val === 'undefined') {
@@ -85,9 +84,14 @@ const currentOrigin = resolveURL(window.location.href)
 function resolveURL(url: string): URLOrigin {
   urlParsingNode.setAttribute('href', url)
   const { protocol, host } = urlParsingNode
-  console.log('protocol', protocol);
-
   return { protocol, host }
 }
 
+export function isAbsoluteURL(url: string): boolean {
+  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url)
+}
+
+export function combineURL(baseURL: string, relativeURL?: string): string {
+  return relativeURL ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '') : baseURL
+}
 

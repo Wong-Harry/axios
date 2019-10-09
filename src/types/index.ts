@@ -18,6 +18,7 @@ export interface AxiosRequestConfig {
   auth?: AxiosBasicCredentials
   validateStatus?: (status: number) => boolean
   paramSerializer?: (params: any) => string
+  baseURL?: string
 
   [propName: string]: any
 }
@@ -32,6 +33,10 @@ export interface AxiosStatic extends AxiosIstance {
   Cancel: CancelStatic
   CancelToken: CancelTokenStatic
   isCancel: (value: any) => boolean
+
+  all<T>(promises: Array<T | Promise<T>>): Promise<T[]>
+  spread<T, R>(callback: (...args: T[]) => R): (arr: T[]) => R
+  Axios: AxiosClassStatic
 }
 
 export type Method =
@@ -83,8 +88,9 @@ export interface Axios {
   delete<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
   options<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
   post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
-  pu<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
+  put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
   patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
+  getUri(config?: AxiosRequestConfig): string
 }
 
 export interface AxiosIstance extends Axios {
@@ -138,4 +144,8 @@ export interface CancelTokenStatic {
 
 export interface CancelExecutor {
   (cancel: Canceler): void
+}
+
+export interface AxiosClassStatic {
+  new(config: AxiosRequestConfig): Axios
 }
