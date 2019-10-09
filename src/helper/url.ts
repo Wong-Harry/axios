@@ -1,4 +1,4 @@
-import { isDate, isPlainObject } from './util'
+import { isDate, isPlainObject, isURLSearchParams } from './util'
 
 interface URLOrigin {
   protocol: string
@@ -67,9 +67,6 @@ export function buildURL(url: string, params: any, paramsSerializer?: (params: a
   return url
 }
 
-export function isURLSearchParams(val: any): val is URLSearchParams {
-  return typeof val !== 'undefined' && val instanceof URLSearchParams
-}
 
 export function isURLSameOrigin(requestURL: string): boolean {
   const parsedOrigin = resolveURL(requestURL)
