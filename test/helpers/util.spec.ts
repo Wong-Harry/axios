@@ -5,7 +5,7 @@ import {
   isURLSearchParams,
   extend,
   deepMerge
-} from '../../src/helpers/util'
+} from '../../src/helper/util'
 
 describe('helpers:util', () => {
   describe('isXX', () => {
@@ -40,7 +40,7 @@ describe('helpers:util', () => {
       expect(a.foo).toBe(123)
     })
 
-    test('should extend properties', function() {
+    test('should extend properties', function () {
       const a = { foo: 123, bar: 456 }
       const b = { bar: 789 }
       const c = extend(a, b)
@@ -74,7 +74,7 @@ describe('helpers:util', () => {
       expect(d.bar).toBe(456)
     })
 
-    test('should deepMerge recursively', function() {
+    test('should deepMerge recursively', function () {
       const a = { foo: { bar: 123 } }
       const b = { foo: { baz: 456 }, bar: { qux: 789 } }
       const c = deepMerge(a, b)
