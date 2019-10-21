@@ -206,6 +206,14 @@ function registerMoreRouter() {
     }
   })
 
+  router.get('/more/400', function (req, res) {
+    // status: 400,
+    // statusText: 'Bad Request',
+    // responseText: '{"error": "BAD USERNAME", "code": 1}'
+    res.status(400).send('Bad Request')
+    res.json('{"error": "BAD USERNAME", "code": 1}')
+    res.end()
+  })
   router.get('/more/304', function (req, res) {
     res.status(304)
     res.end()

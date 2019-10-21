@@ -1,7 +1,7 @@
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types'
 import xhr from './xhr'
 import { buildURL, isAbsoluteURL, combineURL } from '../helper/url';
-import flattenHeaders from '../helper/headers';
+import { flattenHeaders } from '../helper/headers';
 import transform from '../transform';
 
 export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
@@ -11,6 +11,11 @@ export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromis
   // 请求处理完成，发送请求
   return xhr(config).then((res) => {
     return tansformResponseData(res)
+  }, e => {
+    if (e && e.response) {
+      e.response = tansformResponseData(e.response)
+    }
+    return Promise.reject(e)
   })
 }
 

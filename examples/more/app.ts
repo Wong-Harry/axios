@@ -114,15 +114,15 @@ import qs from "qs";
 //   console.log(e.message)
 // })
 
-// axios.get('/more/304', {
-//   validateStatus(status) {
-//     return status >= 200 && status < 400
-//   }
-// }).then(res => {
-//   console.log(res)
-// }).catch((e: AxiosError) => {
-//   console.log(e.message)
-// })
+axios.get('/more/400', {
+  validateStatus(status) {
+    return status >= 200 && status < 500
+  }
+}).then(res => {
+  console.log(res)
+}).catch((e: AxiosError) => {
+  console.log(e.message)
+})
 
 // 设置paramsSerializer
 // axios.get('/more/get', {
