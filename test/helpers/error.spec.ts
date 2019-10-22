@@ -13,9 +13,7 @@ describe(('helper:error'), () => {
       config,
       request
     }
-
     const error = CreateError('boom', config, 'SMOETHING', request, response)
-
     expect(error instanceof Error).toBeTruthy()
     expect(error.message).toBe('boom')
     expect(error.congif).toBe(config)
@@ -23,6 +21,5 @@ describe(('helper:error'), () => {
     expect(error.request).toBe(request)
     expect(error.response).toBe(response)
     expect(error.isAxiosError).toBeTruthy()
-
   })
 })

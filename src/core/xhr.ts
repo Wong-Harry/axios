@@ -12,8 +12,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     const {
       data = null,
       url,
-      method = 'get',
-      headers,
+      method,
+      headers = {},
       responseType,
       timeout,
       cancelToken,
@@ -27,7 +27,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     // 创建个request实例
     const request = new XMLHttpRequest()
     // request初始化
-    request.open(method.toUpperCase(), url!, true)
+    request.open(method!.toUpperCase(), url!, true)
     // 配置request配置项
     configureRequest()
     // 添加request事件处理函数
@@ -61,7 +61,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
           return
         }
         const responseHeaders = parseHeaders(request.getAllResponseHeaders())
-        const responseData = responseType !== 'text' ? request.response : request.responseText
+        // const responseData = responseType !== 'text' ? request.response : request.responseText
+        const responseData = responseType && responseType !== 'text' ? request.response : request.responseText
         const response: AxiosResponse = {
           data: responseData,
           status: request.status,
@@ -117,10 +118,11 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     // 设置取消请求方法
     function processCancel(): void {
       if (cancelToken) {
+        // tslint:disable-next-line: no-floating-promises
         cancelToken.promise.then(reason => {
           request.abort()
           reject(reason)
-        }).catch(e => { console.log(e) })
+        })
       }
     }
     // 请求拦截器，成功才有resolve
