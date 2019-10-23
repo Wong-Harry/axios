@@ -32,12 +32,10 @@ const methodeNoData = ['delete', 'get', 'head', 'options']
 methodeNoData.forEach(method => {
   defaults.headers[method] = {}
 })
-
 const methodeWithData = ['post', 'put', 'patch']
 methodeWithData.forEach(method => {
   defaults.headers[method] = {
     'Content-Type': 'application/x-www-form-urlencoded'
   }
 })
-
 export default defaults

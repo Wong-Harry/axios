@@ -5,10 +5,8 @@ var url_1 = require("../helper/url");
 var headers_1 = require("../helper/headers");
 var transform_1 = require("../transform");
 function dispatchRequest(config) {
-    // 开始处理请求
     throwIfCancellationRequested(config);
     processConfig(config);
-    // 请求处理完成，发送请求
     return xhr_1.default(config).then(function (res) {
         return tansformResponseData(res);
     }, function (e) {
@@ -37,16 +35,8 @@ function throwIfCancellationRequested(config) {
         config.cancelToken.throwIfRequested();
     }
 }
-// function transformRequestData(config: AxiosRequestConfig): any {
-//   return transformReqest(config.data)
-// }
-// function transformHeaders(config: AxiosRequestConfig): any {
-//   const { headers = {}, data } = config
-//   return processHeaders(headers, data)
-// }
 function tansformResponseData(res) {
     res.data = transform_1.default(res.data, res.headers, res.config.transformResponse);
     return res;
 }
-// export default axios
 //# sourceMappingURL=dispatchRequest.js.map
